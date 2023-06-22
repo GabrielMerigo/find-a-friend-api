@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum AnimalSize {
+  SMALL
+  MEDIUM
+  BIG
+  EXTRA_BIG
+}
+
+enum Levels {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum AnimalTypes {
+  CAT
+  DOG
+}
+
+enum Ages {
+  CUB
+  MIDDLE_AGE
+  OLD
+}
+
+model User {
+  id            String @id @default(uuid())
+  email         String @unique
+  password_hash String
+
+  @@map("users")
+}
+
+model Organization {
+  id               String @id @default(uuid())
+  email            String @unique
+  password_hash    String
+  telephone_number String
+  address          String
+  cep              String
+  name             String
+  state            String
+  city             String
+  Pet              Pet[]
+
+  @@map("organizations")
+}
+
+model Pet {
+  id                String      @id @default(uuid())
+  age               Ages
+  name              String
+  color             String
+  animal_size       AnimalSize
+  city              String
+  energy_level      Levels
+  independenc_level Levels
+  type              AnimalTypes
+
+  organization    Organization @relation(fields: [organization_id], references: [id])
+  organization_id String
+
+  @@map("pets")
+}
