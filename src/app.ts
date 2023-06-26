@@ -3,4 +3,4 @@ import { petRoutes } from "./routes/pet";
 
 export const app = fastify();
 
-app.register(petRoutes);
+app.register(petRoutes, { prefix: "pet" });
