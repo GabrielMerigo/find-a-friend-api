@@ -1,6 +1,6 @@
 import fastify from "fastify";
-import { petRoutes } from "./routes/pet";
+import { petRoutes } from "./http/controllers/pet/routes";
 
 export const app = fastify();
 
-app.register(petRoutes, { prefix: "pet" });
+app.register(petRoutes);
