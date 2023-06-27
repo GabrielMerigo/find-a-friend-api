@@ -49,7 +49,6 @@ model Organization {
   name             String
   state            String
   city             String
-  city_id          String
   Pet              Pet[]
 
   @@map("organizations")
@@ -61,7 +60,6 @@ model Pet {
   name               String
   color              String
   animal_size        AnimalSize
-  city               String
   energy_level       Levels
   independence_level Levels
   type               AnimalTypes

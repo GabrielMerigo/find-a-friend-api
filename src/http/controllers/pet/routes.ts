@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify";
 import { create } from "./create";
-import { getPetByCityId } from "./getPetByCityId";
+import { getPetByCityAndState } from "./getPetByCityAndState";
 
 export const petRoutes = async (app: FastifyInstance) => {
   app.post("/pet", create);
-  app.get("/pet/:cityId", getPetByCityId);
+  app.get("/pet", getPetByCityAndState);
 };
