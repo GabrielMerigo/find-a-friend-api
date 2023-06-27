@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-export const getPetByCityAndState = async (
+export const getByCityAndState = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
