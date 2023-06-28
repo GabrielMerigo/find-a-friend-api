@@ -7,13 +7,13 @@ export const getByCharacteristics = async (
   reply: FastifyReply
 ) => {
   const getByCharacteristicsSchema = z.object({
-    animal_size: z.string().nullable(),
-    energy_level: z.enum(["LOW", "MEDIUM", "HIGH"]).nullable(),
-    age: z.enum(["CUB", "MIDDLE_AGE", "OLD"]).nullable(),
-    independence_level: z.enum(["LOW", "MEDIUM", "HIGH"]).nullable(),
-    type: z.enum(["DOG", "CAT"]).nullable(),
-    color: z.string().nullable(),
-    name: z.string().nullable(),
+    animal_size: z.enum(["SMALL", "MEDIUM", "BIG", "EXTRA_BIG"]).nullish(),
+    energy_level: z.enum(["LOW", "MEDIUM", "HIGH"]).nullish(),
+    age: z.enum(["CUB", "MIDDLE_AGE", "OLD"]).nullish(),
+    independence_level: z.enum(["LOW", "MEDIUM", "HIGH"]).nullish(),
+    type: z.enum(["DOG", "CAT"]).nullish(),
+    color: z.string().nullish(),
+    name: z.string().nullish(),
   });
 
   const {
@@ -28,7 +28,6 @@ export const getByCharacteristics = async (
 
   const pets = await prisma.pet.findMany({
     where: {
-      animal_size,
       type,
       age,
       color: {
@@ -37,6 +36,7 @@ export const getByCharacteristics = async (
       name: {
         contains: name,
       },
+      animal_size,
       energy_level,
       independence_level,
     },
