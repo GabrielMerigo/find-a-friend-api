@@ -1,5 +1,4 @@
 import { Prisma, User } from "@prisma/client";
-import { hash } from "bcryptjs";
 import { randomUUID } from "crypto";
 import { UsersRepository } from "../users-repository";
 
@@ -11,7 +10,7 @@ export class InMemoryUsersRepository implements UsersRepository {
       id: randomUUID(),
       name: data.name,
       email: data.email,
-      password_hash: await hash("teste123", 6),
+      password_hash: data.password_hash,
       role: data.role,
     };
 

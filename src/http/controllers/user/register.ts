@@ -1,7 +1,5 @@
-import { EmailAlreadyExistsError } from "@/errors/emailAlreadyExists";
-import { prisma } from "@/lib/prisma";
-import { verifyIfEmailExists } from "@/utils/verifyIfEmailExists";
-import { hash } from "bcryptjs";
+import { UserAlreadyExistsError } from "@/errors/userAlreadyExists";
+import { makeRegisterUseCase } from "@/factories/make-register-use-cases";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -12,25 +10,28 @@ export const register = async (
   const registerBodySchema = z.object({
     name: z.string(),
     email: z.string().email(),
-    role: z.enum(["ADMIN", "CLIENT"]),
     password: z.string().min(6),
+    role: z.enum(["ADMIN", "CLIENT"]),
   });
 
-  const { name, email, role, password } = registerBodySchema.parse(
+  const { name, email, password, role } = registerBodySchema.parse(
     request.body
   );
 
-  const emailExists = await verifyIfEmailExists(email);
-  if (emailExists) return new EmailAlreadyExistsError();
+  try {
+    const registerUseCase = makeRegisterUseCase();
 
-  await prisma.user.create({
-    data: {
+    await registerUseCase.execute({
       name,
       email,
-      password_hash: await hash(password, 6),
+      password,
       role,
-    },
-  });
+    });
+  } catch (error) {
+    if (error instanceof UserAlreadyExistsError) {
+      return reply.status(409).send({ message: error.message });
+    }
+  }
 
-  reply.status(201).send();
+  return reply.status(201).send();
 };
