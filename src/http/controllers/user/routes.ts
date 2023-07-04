@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { authenticate } from "./authenticate";
+import { authenticate } from "./authenticate/authenticate";
 import { register } from "./register";
 
 export const userRoutes = async (app: FastifyInstance) => {
